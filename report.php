@@ -31,12 +31,13 @@ require_capability('block/powerbi:addinstance', $ctx);
 
 $PAGE->set_context($ctx);
 $PAGE->set_url('/blocks/powerbi/report.php');
+$PAGE->set_heading(new lang_string('pluginname', 'block_powerbi'));
 
 $output = $PAGE->get_renderer('block_powerbi');
 
 $list = new \block_powerbi\output\reports_list();
 
 echo $output->header(),
-     $output->heading(new lang_string('pluginname', 'block_powerbi')),
+     $output->heading(get_string('managereports', 'block_powerbi')),
      $output->render($list),
      $output->footer();

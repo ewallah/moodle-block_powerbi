@@ -66,7 +66,7 @@ class embedded_report implements renderable, templatable {
                     'client_secret' => $clientsecret,
                 ]
             );
-            $url = 'https://login.microsoftonline.com/'; // +CHAVE??
+            $url = 'https://login.microsoftonline.com/IDENTIFICADORDAEMPRESA/oauth2/token';
             $firstresponse = ($curl->post($url, $data));
             var_dump($curl->get_raw_response());
 
