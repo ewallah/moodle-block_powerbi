@@ -42,7 +42,7 @@ use renderer_base;
  */
 class embedded_report implements renderable, templatable {
 
-    public $reports = [];
+    public $token = '';
 
     /**
      * Constructor.
@@ -57,7 +57,6 @@ class embedded_report implements renderable, templatable {
             $curl = new \curl();
             $curl->setHeader('Accept: application/json');
             $curl->setHeader('Content-Type: application/x-www-form-urlencoded');
-            $url = 'https://login.microsoftonline.com/'; // +CHAVE??
             $data = json_encode(
                 (object)[
                     'grant_type' => 'client_credentials',
@@ -67,13 +66,14 @@ class embedded_report implements renderable, templatable {
                     'client_secret' => $clientsecret,
                 ]
             );
-            $firstresponse = json_decode($curl->post($url, $data));
+            $url = 'https://login.microsoftonline.com/'; // +CHAVE??
+            $firstresponse = ($curl->post($url, $data));
+            var_dump($curl->get_raw_response());
 
-
+            $decodedresponse = json_decode($firstresponse);
             $curl = new \curl();
-            $curl->setHeader('Authorization: Bearer '.$firstresponse->access_token);
+            $curl->setHeader('Authorization: Bearer '. $decodedresponse->access_token);
             $curl->setHeader('Content-type: application/json');
-            $url = 'https://api.powerbi.com/v1.0/myorg/GenerateToken';
             $embeddata = json_encode(
                 (object)[
                   'datasets' => [(object)['id' => $report->dataset_id]],
@@ -81,14 +81,16 @@ class embedded_report implements renderable, templatable {
                   'targetWorkspaces' => [(object)['id' => $report->workspace_id]],
                 ]
             );
-            $this->embeddata = $secondresponse = $curl->post($url, $embeddata);
-            var_dump($secondresponse);
+            $url = 'https://api.powerbi.com/v1.0/myorg/GenerateToken';
+            $this->token = $curl->post($url, $embeddata);
+            $this->reportid = $report->report_id;
+            $this->groupid = $report->dataset_id;
         }
     }
 
     public function export_for_template(renderer_base $output) {
         return (object)[
-            'embeddeddata' => $this->embeddata,
+            'token' => $this->token,
             'managereportsurl' => (new moodle_url('/blocks/powerbi/report.php'))->out(),
         ];
     }
