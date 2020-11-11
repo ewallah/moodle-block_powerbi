@@ -25,4 +25,18 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['actions'] = 'Actions';
+$string['addreport'] = 'Add new report';
+$string['addingreport'] = 'Adding new report';
+$string['clientid'] = 'Client ID';
+$string['clientiddesc'] = 'The Client ID provided by Power BI';
+$string['clientsecret'] = 'Client Secret';
+$string['clientsecretdesc'] = 'The Client Secret provided by Power BI';
+$string['editingreport'] = 'Editing report';
+$string['managereports'] = 'Manage reports';
+$string['reportadded'] = 'Report added successfully';
+$string['reportdatasetid'] = 'Dataset ID';
+$string['reportname'] = 'Report name';
+$string['reportreportid'] = 'Report ID';
+$string['reportworkspaceid'] = 'Workspace ID';
 $string['pluginname'] = 'Power BI';

@@ -26,6 +26,6 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'block_powerbi';
 $plugin->release = '1';
-$plugin->version = 2020111100;
+$plugin->version = 2020111103;
 $plugin->requires = 2020061500;
 $plugin->maturity = MATURITY_ALPHA;

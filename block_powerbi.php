@@ -60,12 +60,10 @@ class block_powerbi extends block_base {
         $this->content->icons = array();
         $this->content->footer = '';
 
-        if (!empty($this->config->text)) {
-            $this->content->text = $this->config->text;
-        } else {
-            $text = 'Please define the content text in /blocks/powerbi/block_powerbi.php.';
-            $this->content->text = $text;
-        }
+        $this->content->text = html_writer::link(
+            new moodle_url('/blocks/powerbi/report.php'),
+            get_string('managereports', 'block_powerbi')
+        );
 
         return $this->content;
     }

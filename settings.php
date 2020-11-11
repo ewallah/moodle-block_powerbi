@@ -26,6 +26,16 @@
 defined('MOODLE_INTERNAL') || die();
 
 if ($ADMIN->fulltree) {
-   // TODO: Define the plugin settings page.
-   // https://docs.moodle.org/dev/Admin_settings
+
+    // Client ID.
+    $setting = new admin_setting_configtext('block_powerbi/clientid',
+        new lang_string('clientid', 'block_powerbi'),
+        new lang_string('clientiddesc', 'block_powerbi'), '', PARAM_TEXT);
+    $settings->add($setting);
+
+    // Client Secret.
+    $setting = new admin_setting_configtext('block_powerbi/clientsecret',
+        new lang_string('clientsecret', 'block_powerbi'),
+        new lang_string('clientsecretdesc', 'block_powerbi'), '', PARAM_TEXT);
+    $settings->add($setting);
 }
