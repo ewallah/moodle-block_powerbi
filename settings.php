@@ -38,4 +38,10 @@ if ($ADMIN->fulltree) {
         new lang_string('clientsecret', 'block_powerbi'),
         new lang_string('clientsecretdesc', 'block_powerbi'), '', PARAM_TEXT);
     $settings->add($setting);
+
+    // Tenant.
+    $setting = new admin_setting_configtext('block_powerbi/tenant',
+        new lang_string('tenant', 'block_powerbi'),
+        new lang_string('tenantdesc', 'block_powerbi'), '', PARAM_TEXT);
+    $settings->add($setting);
 }

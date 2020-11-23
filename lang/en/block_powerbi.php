@@ -40,4 +40,6 @@ $string['reportdatasetid'] = 'Dataset ID';
 $string['reportname'] = 'Report name';
 $string['reportreportid'] = 'Report ID';
 $string['reportworkspaceid'] = 'Workspace ID';
+$string['tenant'] = 'Tenant';
+$string['tenantdesc'] = 'The Tenant of your organization provided by Power BI';
 $string['viewingembeddedreport'] = 'Viewing embedded report';

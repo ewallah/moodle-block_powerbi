@@ -51,26 +51,29 @@ class embedded_report implements renderable, templatable {
         global $CFG;
 
         if (($clientid = get_config('block_powerbi', 'clientid')) &&
-            ($clientsecret = get_config('block_powerbi', 'clientsecret'))) {
+            ($clientsecret = get_config('block_powerbi', 'clientsecret')) &&
+            ($tenant = get_config('block_powerbi', 'tenant'))) {
 
+            $url = 'https://login.microsoftonline.com/' . $tenant . '/oauth2/v2.0/token';
 
-            $curl = new \curl();
-            $curl->setHeader('Accept: application/json');
-            $curl->setHeader('Content-Type: application/x-www-form-urlencoded');
-            $data = json_encode(
-                (object)[
-                    'grant_type' => 'client_credentials',
-                    'scope' => 'openid',
-                    'resource' => 'https://analysis.windows.net/powerbi/api',
-                    'client_id' => $clientid,
-                    'client_secret' => $clientsecret,
-                ]
-            );
-            $url = 'https://login.microsoftonline.com/IDENTIFICADORDAEMPRESA/oauth2/token';
-            $firstresponse = ($curl->post($url, $data));
-            var_dump($curl->get_raw_response());
+            $ch = curl_init();
+            curl_setopt_array($ch, [
+                CURLOPT_POST => true,
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+            ]);
+            $query ='grant_type=client_credentials'.
+                    '&client_secret='.$clientsecret.
+                    '&client_id='.$clientid.
+                    '&scope='.urlencode('https://analysis.windows.net/powerbi/api/.default');
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
 
-            $decodedresponse = json_decode($firstresponse);
+            if (!$result = curl_exec($ch)) {
+                trigger_error(curl_error($ch));
+            }
+            curl_close($ch);
+
+            $decodedresponse = json_decode($result);
             $curl = new \curl();
             $curl->setHeader('Authorization: Bearer '. $decodedresponse->access_token);
             $curl->setHeader('Content-type: application/json');
@@ -83,6 +86,8 @@ class embedded_report implements renderable, templatable {
             );
             $url = 'https://api.powerbi.com/v1.0/myorg/GenerateToken';
             $this->token = $curl->post($url, $embeddata);
+            var_dump($this->token);
+            die();
             $this->reportid = $report->report_id;
             $this->groupid = $report->dataset_id;
         }
