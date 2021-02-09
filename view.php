@@ -37,6 +37,7 @@ $PAGE->set_context($ctx);
 $PAGE->set_url('/blocks/powerbi/report.php');
 $PAGE->set_heading(new lang_string('pluginname', 'block_powerbi'));
 
+$PAGE->requires->js('/blocks/powerbi/vendor/powerbi/dist/powerbi.js');
 $output = $PAGE->get_renderer('block_powerbi');
 $report = new \block_powerbi\output\embedded_report($report);
 

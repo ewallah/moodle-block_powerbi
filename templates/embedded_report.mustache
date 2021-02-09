@@ -32,7 +32,42 @@
 <div class="powerbi container-fluid">
   <div class="row">
       <div class="col-12">
+          <p>EmbedToken: {{token}}</p>
+          <div id="embedContainer"></div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-12">
           <iframe src="{{embedurl}}" style="width: 100%; height: 50em;"></div>
       </div>
   </div>
 </div>
+{{#js}}
+    const embedUrl = 'https://app.powerbi.com/reportEmbed?reportId=' + {{reportid}} + '&groupId=' + {{groupid}};
+    const groupId = {{reportid}};
+    const reportId = {{groupid}};
+    var models = window["powerbi-client"].models;
+    var permissions = models.Permissions.All;
+
+    const config = {
+        type: "report",
+        tokenType: models.TokenType.Embed,
+        accessToken: {{token}},
+        embedUrl: embedUrl,
+        id: reportId,
+        permissions: permissions,
+        settings: {
+          layoutType: models.LayoutType.Custom,
+          customLayout: {
+            displayOption: models.DisplayOption.FitToWidth,
+          },
+        },
+    };
+
+    var embedContainer = $("#embedContainer")[0];
+    var report = powerbi.embed(embedContainer, config);
+    report.off("loaded");
+    report.on("loaded", function () {
+        console.log("Loaded");
+    });
+{{/js}}
