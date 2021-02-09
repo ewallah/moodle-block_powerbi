@@ -42,7 +42,9 @@ use renderer_base;
  */
 class embedded_report implements renderable, templatable {
 
-    public $token = '';
+    private $reportfound = false;
+    private $embedurl = '';
+    private $name = '';
 
     /**
      * Constructor.
@@ -77,6 +79,18 @@ class embedded_report implements renderable, templatable {
             $curl = new \curl();
             $curl->setHeader('Authorization: Bearer '. $decodedresponse->access_token);
             $curl->setHeader('Content-type: application/json');
+
+            $result = $curl->get('https://api.powerbi.com/v1.0/myorg/groups/'.$report->workspace_id.'/reports/'.$report->report_id);
+            if (empty($result)) {
+                $this->reportfound = false;
+            } else {
+                $this->reportfound = true;
+                $dash = json_decode($result);
+
+                $this->name = $dash->name;
+                $this->embedurl = $dash->embedUrl;
+            }
+            /*
             $embeddata = json_encode(
                 (object)[
                   'datasets' => [(object)['id' => $report->dataset_id]],
@@ -90,12 +104,15 @@ class embedded_report implements renderable, templatable {
             die();
             $this->reportid = $report->report_id;
             $this->groupid = $report->dataset_id;
+            */
         }
     }
 
     public function export_for_template(renderer_base $output) {
         return (object)[
-            'token' => $this->token,
+            'reportfound' => $this->reportfound,
+            'embedurl' => $this->embedurl,
+            'name' => $this->name,
             'managereportsurl' => (new moodle_url('/blocks/powerbi/report.php'))->out(),
         ];
     }

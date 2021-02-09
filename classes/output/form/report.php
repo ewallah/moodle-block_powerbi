@@ -44,9 +44,6 @@ class report extends moodleform {
         $mform->addElement('text', 'name', get_string('reportname', 'block_powerbi'));
         $mform->setType('name', PARAM_TEXT);
 
-        $mform->addElement('text', 'dataset_id', get_string('reportdatasetid', 'block_powerbi'));
-        $mform->setType('dataset_id', PARAM_TEXT);
-
         $mform->addElement('text', 'workspace_id', get_string('reportworkspaceid', 'block_powerbi'));
         $mform->setType('workspace_id', PARAM_TEXT);
 
