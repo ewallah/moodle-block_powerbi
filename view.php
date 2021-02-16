@@ -36,10 +36,10 @@ $report = $DB->get_record('block_powerbi_reports', ['id' => $id]);
 $PAGE->set_context($ctx);
 $PAGE->set_url('/blocks/powerbi/report.php');
 $PAGE->set_heading(new lang_string('pluginname', 'block_powerbi'));
+$PAGE->set_title(new lang_string('pluginname', 'block_powerbi'));
 
-$PAGE->requires->js('/blocks/powerbi/vendor/powerbi/dist/powerbi.min.js');
 $output = $PAGE->get_renderer('block_powerbi');
-$report = new \block_powerbi\output\embedded_report($report);
+$report = new \block_powerbi\output\embedded_report($report, $PAGE);
 
 echo $output->header(),
      $output->heading(new lang_string('pluginname', 'block_powerbi')),

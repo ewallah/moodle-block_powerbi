@@ -49,8 +49,10 @@ class embedded_report implements renderable, templatable {
     /**
      * Constructor.
      */
-    public function __construct(\stdClass $report) {
+    public function __construct(\stdClass $report, $page) {
         global $CFG;
+
+        $this->page = $page;
 
         if (($clientid = get_config('block_powerbi', 'clientid')) &&
             ($clientsecret = get_config('block_powerbi', 'clientsecret')) &&
@@ -91,16 +93,19 @@ class embedded_report implements renderable, templatable {
                 $this->embedurl = $dash->embedUrl;
             }
             $this->reportid = $report->report_id;
-            $this->groupid = $report->dataset_id;
             $embeddata = json_encode(
                 (object)[
-                  //'datasets' => [(object)['id' => $report->dataset_id]],
+                  'datasets' => [(object)['id' => $dash->datasetId]],
                   'reports' => [(object)['id' => $report->report_id]],
                   'targetWorkspaces' => [(object)['id' => $report->workspace_id]],
                 ]
             );
             $url = 'https://api.powerbi.com/v1.0/myorg/GenerateToken';
-            $this->token = $curl->post($url, $embeddata);
+            $pbtoken = json_decode($curl->post($url, $embeddata));
+            $this->accesstoken = $pbtoken->token;
+
+            $this->page->requires->jquery();
+            $this->page->requires->js(new moodle_url('/blocks/powerbi/js/embed.js'));
         }
     }
 
@@ -110,8 +115,7 @@ class embedded_report implements renderable, templatable {
             'embedurl' => $this->embedurl,
             'name' => $this->name,
             'reportid' => $this->reportid,
-            'groupid' => $this->groupid,
-            'token' => $this->token,
+            'token' => $this->accesstoken,
             'managereportsurl' => (new moodle_url('/blocks/powerbi/report.php'))->out(),
         ];
         return $context;

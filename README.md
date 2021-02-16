@@ -1,8 +1,13 @@
 # Power BI #
 
-TODO Describe the plugin shortly here.
+This plugins integrates PowerBI Embedded dashboards.
 
-TODO Provide more detailed description here.
+You can configure your own reports to be displayed inside Moodle.
+
+Remember to include "powerbi.js" in "additionalhtmlfooter".
+Add a line like this:
+
+<script src="https://mymoodleurl/blocks/powerbi/js/powerbi.js"></script>
 
 ## License ##
 
