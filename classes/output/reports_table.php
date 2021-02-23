@@ -47,6 +47,10 @@ class reports_table implements renderable, templatable {
     public function __construct() {
         global $DB;
         $this->reports = $DB->get_records('block_powerbi_reports');
+        foreach ($this->reports as $key => $r) {
+            $this->reports[$key]->editurl = (new moodle_url('/blocks/powerbi/edit_report.php', ['id' => $r->id]))->out();
+            $this->reports[$key]->viewurl = (new moodle_url('/blocks/powerbi/view.php', ['id' => $r->id]))->out();
+        }
     }
 
     public function export_for_template(renderer_base $output) {
@@ -54,7 +58,6 @@ class reports_table implements renderable, templatable {
             'hasreports' => !empty($this->reports),
             'reports' => array_values($this->reports),
             'addreporturl' => (new moodle_url('/blocks/powerbi/edit_report.php'))->out(),
-            'viewreporturl' => (new moodle_url('/blocks/powerbi/view.php'))->out(),
         ];
     }
 }

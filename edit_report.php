@@ -41,13 +41,18 @@ $form = new \block_powerbi\output\form\report();
 if ($form->is_cancelled()) {
     redirect('/blocks/powerbi/report.php');
 } else if ($data = $form->get_data()) {
-    if ($DB->insert_record('block_powerbi_reports', $data)) {
-        redirect(new moodle_url('/blocks/powerbi/report.php'), get_string('reportadded', 'block_powerbi'));
+    if (empty($data->id)) {
+        $DB->insert_record('block_powerbi_reports', $data);
+        $str = get_string('reportadded', 'block_powerbi');
+    } else {
+        $DB->update_record('block_powerbi_reports', $data);
+        $str = get_string('reportupdated', 'block_powerbi');
     }
+    redirect(new moodle_url('/blocks/powerbi/report.php'), $str);
 }
 if ($id) {
     $heading = get_string('editingreport', 'block_powerbi');
-    $form->set_data($DB->get_record('block_powerbi_report', ['id' => $id]));
+    $form->set_data($DB->get_record('block_powerbi_reports', ['id' => $id]));
 } else {
     $heading = get_string('addingreport', 'block_powerbi');
 }

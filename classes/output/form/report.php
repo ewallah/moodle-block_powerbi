@@ -41,6 +41,9 @@ class report extends moodleform {
     public function definition() {
         $mform = $this->_form;
 
+        $mform->addElement('hidden', 'id');
+        $mform->setType('id', PARAM_INT);
+
         $mform->addElement('text', 'name', get_string('reportname', 'block_powerbi'));
         $mform->setType('name', PARAM_TEXT);
 
