@@ -27,17 +27,21 @@ require_once('../../config.php');
 $ctx = context_system::instance();
 
 require_login();
-require_capability('block/powerbi:addinstance', $ctx);
+require_capability('block/powerbi:managereports', $ctx);
+
+$str = new lang_string('pluginname', 'block_powerbi');
+$url = new moodle_url('/blocks/powerbi/report.php'); 
 
 $PAGE->set_context($ctx);
-$PAGE->set_url('/blocks/powerbi/report.php');
-$PAGE->set_heading(new lang_string('pluginname', 'block_powerbi'));
+$PAGE->set_url($url);
+$PAGE->set_heading($str);
+$PAGE->navbar->add($str, $url);
 
 $output = $PAGE->get_renderer('block_powerbi');
 
-$list = new \block_powerbi\output\reports_list();
+$table = new \block_powerbi\output\reports_table();
 
 echo $output->header(),
      $output->heading(get_string('managereports', 'block_powerbi')),
-     $output->render($list),
+     $output->render($table),
      $output->footer();

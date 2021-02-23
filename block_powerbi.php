@@ -58,12 +58,23 @@ class block_powerbi extends block_base {
         $this->content = new stdClass();
         $this->content->items = array();
         $this->content->icons = array();
+        $this->content->text = null;
         $this->content->footer = '';
 
-        $this->content->text = html_writer::link(
-            new moodle_url('/blocks/powerbi/report.php'),
-            get_string('managereports', 'block_powerbi')
-        );
+        $ctx = context_system::instance();
+
+        if (has_capability('moodle/site:config', $ctx)) {
+            $output = $this->page->get_renderer('block_powerbi');
+            $list = new \block_powerbi\output\reports_list();
+            $this->content->text = $output->render($list);
+        }
+
+        if (has_capability('block/powerbi:managereports', $ctx)) {
+            $this->content->footer = html_writer::link(
+                new moodle_url('/blocks/powerbi/report.php'),
+                get_string('managereports', 'block_powerbi')
+            );
+        }
 
         return $this->content;
     }

@@ -22,37 +22,11 @@
     Example context (json):
     {
         "reports": [],
-        "addreporturl": "wwwroot/blocks/powerbi/edit_report.php"
-        "viewreporturl": "wwwroot/blocks/powerbi/view.php?id=X"
+        "viewreporturl": "wwwroot/blocks/powerbi/view.php"
     }
 }}
-{{^hasreports}}
-<div class="row">
-  <div class="col-auto">
-    {{#str}} nothingtodisplay {{/str}}
-  </div>
-</div>
-{{/hasreports}}
-{{#hasreports}}
-  <table class="table general-table">
-    <tr>
-      <th>{{#str}} reportname, block_powerbi {{/str}}</th>
-      <th>{{#str}} reportdatasetid, block_powerbi {{/str}}</th>
-      <th>{{#str}} reportworkspaceid, block_powerbi {{/str}}</th>
-      <th>{{#str}} reportreportid, block_powerbi {{/str}}</th>
-      <th>{{#str}} actions, block_powerbi {{/str}}</th>
-    </tr>
-    {{#reports}}
-    <tr>
-      <td>{{name}}</td>
-      <td>{{dataset_id}}</td>
-      <td>{{workspace_id}}</td>
-      <td>{{report_id}}</td>
-      <td>
-        <a href="{{viewreporturl}}?id={{id}}">View embedded report</a>
-      </td>
-    </tr>
-    {{/reports}}
-  </table>
-{{/hasreports}}
-<a href="{{addreporturl}}" class="btn btn-primary">{{#str}} addreport, block_powerbi {{/str}}</a>
+<ul>
+{{#reports}}
+    <li><a href="{{viewreporturl}}?id={{id}}">{{name}}</a></li>
+{{/reports}}
+</ul>

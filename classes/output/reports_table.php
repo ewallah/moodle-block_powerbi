@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Reports list
+ * Reports table
  *
  * @package   block_powerbi
  * @copyright 2020 Daniel Neis Araujo <daniel@adapta.online>
@@ -31,13 +31,13 @@ use templatable;
 use renderer_base;
 
 /**
- * Reports list renderable class.
+ * Reports table renderable class.
  *
  * @package   block_powerbi
  * @copyright 2020 Daniel Neis Araujo <daniel@adapta.online>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class reports_list implements renderable, templatable {
+class reports_table implements renderable, templatable {
 
     public $reports = [];
 
@@ -51,7 +51,9 @@ class reports_list implements renderable, templatable {
 
     public function export_for_template(renderer_base $output) {
         return (object)[
+            'hasreports' => !empty($this->reports),
             'reports' => array_values($this->reports),
+            'addreporturl' => (new moodle_url('/blocks/powerbi/edit_report.php'))->out(),
             'viewreporturl' => (new moodle_url('/blocks/powerbi/view.php'))->out(),
         ];
     }

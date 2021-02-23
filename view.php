@@ -29,19 +29,24 @@ $id = required_param('id', PARAM_INT);
 $ctx = context_system::instance();
 
 require_login();
-// TODO: require_capability('block/powerbi:viewreport', $ctx);
+require_capability('block/powerbi:viewreports', $ctx);
 
 $report = $DB->get_record('block_powerbi_reports', ['id' => $id]);
 
+$str = new lang_string('pluginname', 'block_powerbi');
+
 $PAGE->set_context($ctx);
 $PAGE->set_url('/blocks/powerbi/report.php');
-$PAGE->set_heading(new lang_string('pluginname', 'block_powerbi'));
-$PAGE->set_title(new lang_string('pluginname', 'block_powerbi'));
+$PAGE->set_heading($str);
+$PAGE->set_title($str);
+if (has_capability('block/powerbi:managereports', $ctx)) {
+    $PAGE->navbar->add(new lang_string('managereports', 'block_powerbi'), new moodle_url('/blocks/powerbi/report.php'));
+}
+$PAGE->navbar->add($str);
 
 $output = $PAGE->get_renderer('block_powerbi');
 $report = new \block_powerbi\output\embedded_report($report, $PAGE);
 
 echo $output->header(),
-     $output->heading(new lang_string('pluginname', 'block_powerbi')),
      $output->render($report),
      $output->footer();
