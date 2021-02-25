@@ -30,6 +30,8 @@ use renderable;
 use templatable;
 use renderer_base;
 
+require_once($CFG->dirroot.'/cohort/lib.php');
+
 /**
  * Reports list renderable class.
  *
@@ -45,8 +47,24 @@ class reports_list implements renderable, templatable {
      * Constructor.
      */
     public function __construct() {
-        global $DB;
-        $this->reports = $DB->get_records('block_powerbi_reports');
+        global $DB, $USER;
+        if (!has_capability('moodle/site:config', \context_system::instance())) {
+            $this->reports = $DB->get_records('block_powerbi_reports');
+        } else {
+            $cohorts = cohort_get_user_cohorts($USER->id);
+            if (!empty($cohorts)) {
+                $cohortids = array_map(function($c) {
+                    return $c->id;
+                }, $cohorts);
+                list($sqlcohorts, $params) = $DB->get_in_or_equal($cohortids);
+                $sql = "SELECT DISTINCT p.*
+                          FROM {block_powerbi_reports} p
+                          JOIN {block_powerbi_reports_cohort} c
+                            ON (c.reportid = p.id)
+                         WHERE c.cohortid {$sqlcohorts}";
+                $this->reports = $DB->get_records_sql($sql, $params);
+            }
+        }
     }
 
     public function export_for_template(renderer_base $output) {

@@ -34,6 +34,7 @@ $url = new moodle_url('/blocks/powerbi/report.php');
 
 $PAGE->set_context($ctx);
 $PAGE->set_url($url);
+$PAGE->set_title($str . ' - ' . $SITE->fullname);
 $PAGE->set_heading($str);
 $PAGE->navbar->add($str, $url);
 

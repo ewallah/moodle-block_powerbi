@@ -53,6 +53,19 @@ class report extends moodleform {
         $mform->addElement('text', 'report_id', get_string('reportreportid', 'block_powerbi'));
         $mform->setType('report_id', PARAM_TEXT);
 
+        $options = [];
+        $values = [];
+        foreach ($this->_customdata['cohorts'] as $c) {
+            $options[$c->id] = $c->name;
+            if (!is_null($c->reportcohort)) {
+                $values[] = $c->id;
+            }
+        }
+
+        $mform->addElement('autocomplete', 'cohorts', get_string('selectcohortstosync', 'tool_lp'), $options, ['multiple' => true]);
+        $autocomplete = $mform->getElement('cohorts');
+        $autocomplete->setSelected($values);
+
         $this->add_action_buttons();
     }
 }
