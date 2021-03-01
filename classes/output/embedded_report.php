@@ -50,7 +50,7 @@ class embedded_report implements renderable, templatable {
      * Constructor.
      */
     public function __construct(\stdClass $report, $page) {
-        global $CFG;
+        global $CFG, $USER;
 
         $this->page = $page;
 
@@ -91,6 +91,25 @@ class embedded_report implements renderable, templatable {
 
                 $this->name = $dash->name;
                 $this->embedurl = $dash->embedUrl;
+
+                profile_load_data($USER);
+                if (!empty($report->filters)) {
+                    $filtersarr = [];
+                    foreach ($report->filters as $f) {
+                        if (empty($f->name) || empty($USER->{$f->field})) {
+                            continue;
+                        }
+                        $value = $USER->{$f->field};
+                        if ($f->base64) {
+                            $value = base64_encode($value);
+                        }
+                        $filtersarr[] = "{$f->name} eq '{$value}'";
+                    }
+                    if (!empty($filtersarr)) {
+                        $filters = implode(' and ', $filtersarr);
+                        $this->embedurl .= '?filter=' . $filters;
+                    }
+                }
             }
             $this->reportid = $report->report_id;
             $embeddata = json_encode(

@@ -47,6 +47,9 @@ $PAGE->set_url($url);
 $PAGE->set_title($title);
 $PAGE->set_heading(new lang_string('pluginname', 'block_powerbi'));
 
+$PAGE->navbar->add(new lang_string('managereports', 'block_powerbi'), new moodle_url('/blocks/powerbi/report.php'));
+$PAGE->navbar->add($title);
+
 $output = $PAGE->get_renderer('block_powerbi');
 
 $cohortssql =
