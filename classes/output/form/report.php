@@ -62,7 +62,7 @@ class report extends moodleform {
             }
         }
 
-        $autocomplete = $mform->addElement('autocomplete', 'cohorts', get_string('selectcohortstosync', 'tool_lp'), $options, ['multiple' => true]);
+        $autocomplete = $mform->addElement('autocomplete', 'cohorts', get_string('cohorts', 'block_powerbi'), $options, ['multiple' => true]);
         $autocomplete->setSelected($values);
 
         $elements = [

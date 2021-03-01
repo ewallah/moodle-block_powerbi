@@ -34,6 +34,7 @@ $string['clientid'] = 'Client ID';
 $string['clientiddesc'] = 'The Client ID provided by Power BI';
 $string['clientsecret'] = 'Client Secret';
 $string['clientsecretdesc'] = 'The Client Secret provided by Power BI';
+$string['cohorts'] = 'Cohorts';
 $string['confirmdeletereport'] = 'Are you sure you want to delete this report? This action cannot be undone.';
 $string['editingreport'] = 'Editing report';
 $string['filter'] = 'Filtro';
