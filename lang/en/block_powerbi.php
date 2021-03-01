@@ -26,14 +26,17 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['actions'] = 'Actions';
+$string['addfilters'] = 'Add {no} more filters';
 $string['addreport'] = 'Add new report';
 $string['addingreport'] = 'Adding new report';
+$string['applybase64'] = 'Apply base64 encoding to parameter value';
 $string['clientid'] = 'Client ID';
 $string['clientiddesc'] = 'The Client ID provided by Power BI';
 $string['clientsecret'] = 'Client Secret';
 $string['clientsecretdesc'] = 'The Client Secret provided by Power BI';
 $string['confirmdeletereport'] = 'Are you sure you want to delete this report? This action cannot be undone.';
 $string['editingreport'] = 'Editing report';
+$string['filter'] = 'Filtro';
 $string['managereports'] = 'Manage reports';
 $string['pluginname'] = 'Power BI';
 $string['reportadded'] = 'Report added successfully';

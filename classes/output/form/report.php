@@ -62,10 +62,50 @@ class report extends moodleform {
             }
         }
 
-        $mform->addElement('autocomplete', 'cohorts', get_string('selectcohortstosync', 'tool_lp'), $options, ['multiple' => true]);
-        $autocomplete = $mform->getElement('cohorts');
+        $autocomplete = $mform->addElement('autocomplete', 'cohorts', get_string('selectcohortstosync', 'tool_lp'), $options, ['multiple' => true]);
         $autocomplete->setSelected($values);
 
+        $elements = [
+            $mform->createElement('text', 'name', '', ['size' => 12]),
+            $mform->createElement('select', 'field', '', $this->filter_options()),
+            $mform->createElement('checkbox', 'base64', get_string('applybase64', 'block_powerbi')),
+        ];
+        $filters = $mform->createElement('group', 'filters', get_string('filter', 'block_powerbi'), $elements);
+
+        $this->repeat_elements([$filters], 3, ['filters[name]' => ['type' => PARAM_TEXT]],
+            'filterscount', 'addfilters', 3, get_string('addfilters', 'block_powerbi'));
+
         $this->add_action_buttons();
+    }
+
+    function filter_options() {
+        global $DB;
+
+        $filters = [
+            'id'          => 'id',
+            'username'    => get_string('username'),
+            'idnumber'    => get_string('idnumber'),
+            'firstname'   => get_string('firstname'),
+            'lastname'    => get_string('lastname'),
+            'fullname'    => get_string('fullnameuser'),
+            'email'       => get_string('email'),
+            'icq'         => get_string('icqnumber'),
+            'phone1'      => get_string('phone1'),
+            'phone2'      => get_string('phone2'),
+            'institution' => get_string('institution'),
+            'department'  => get_string('department'),
+            'address'     => get_string('address'),
+            'city'        => get_string('city'),
+            'timezone'    => get_string('timezone'),
+            'url'         => get_string('webpage'),
+        ];
+
+        if ($profilefields = $DB->get_records('user_info_field', [], 'sortorder ASC')) {
+            foreach ($profilefields as $f) {
+                $filters['profile_field_' . $f->shortname] = format_string($f->name);
+            }
+        }
+
+        return $filters;
     }
 }

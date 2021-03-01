@@ -48,7 +48,7 @@ class reports_list implements renderable, templatable {
      */
     public function __construct() {
         global $DB, $USER;
-        if (!has_capability('moodle/site:config', \context_system::instance())) {
+        if (has_capability('moodle/site:config', \context_system::instance())) {
             $this->reports = $DB->get_records('block_powerbi_reports');
         } else {
             $cohorts = cohort_get_user_cohorts($USER->id);

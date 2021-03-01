@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="blocks/powerbi/db" VERSION="20210225" COMMENT="XMLDB file for Moodle blocks/powerbi"
+<XMLDB PATH="blocks/powerbi/db" VERSION="20210301" COMMENT="XMLDB file for Moodle blocks/powerbi"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -32,6 +32,21 @@
         <KEY NAME="reportid" TYPE="foreign" FIELDS="reportid" REFTABLE="block_powerbi_reports" REFFIELDS="id"/>
         <KEY NAME="cohortid" TYPE="foreign" FIELDS="cohortid" REFTABLE="cohort" REFFIELDS="id"/>
       </KEYS>
+    </TABLE>
+    <TABLE NAME="block_powerbi_reports_filter" COMMENT="Filter for each report">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="reportid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="field" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="base64" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="reportid" UNIQUE="false" FIELDS="reportid"/>
+      </INDEXES>
     </TABLE>
   </TABLES>
 </XMLDB>

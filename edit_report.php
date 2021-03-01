@@ -23,6 +23,7 @@
  */
 
 require_once('../../config.php');
+require_once($CFG->dirroot.'/cohort/lib.php');
 
 $id = optional_param('id', 0, PARAM_INT);
 
@@ -31,14 +32,23 @@ $ctx = context_system::instance();
 require_login();
 require_capability('block/powerbi:addinstance', $ctx);
 
-$PAGE->set_context($ctx);
+if ($id) {
+    $title = new lang_string('editingreport', 'block_powerbi');
+    $heading = get_string('editingreport', 'block_powerbi');
+} else {
+    $title = new lang_string('addingreport', 'block_powerbi');
+    $heading = get_string('addingreport', 'block_powerbi');
+}
+
 $url = new moodle_url('/blocks/powerbi/edit_report.php');
+
+$PAGE->set_context($ctx);
 $PAGE->set_url($url);
+$PAGE->set_title($title);
 $PAGE->set_heading(new lang_string('pluginname', 'block_powerbi'));
 
 $output = $PAGE->get_renderer('block_powerbi');
 
-require_once($CFG->dirroot.'/cohort/lib.php');
 $cohortssql =
     'SELECT c.id, c.name, rc.id as reportcohort
        FROM {cohort} c
@@ -56,6 +66,7 @@ if ($form->is_cancelled()) {
     } else {
         $reportid = $data->id;
         $DB->delete_records('block_powerbi_reports_cohort', ['reportid' => $reportid]);
+        $DB->delete_records('block_powerbi_reports_filter', ['reportid' => $reportid]);
         $DB->update_record('block_powerbi_reports', $data);
         $str = get_string('reportupdated', 'block_powerbi');
     }
@@ -66,13 +77,29 @@ if ($form->is_cancelled()) {
             $DB->insert_record_raw('block_powerbi_reports_cohort', $reportcohort);
         }
     }
+    $reportfilter = (object)['reportid' => $reportid];
+    if (isset($data->filters)) {
+        foreach ($data->filters as $filter) {
+            $reportfilter->name = $filter['name'];
+            $reportfilter->field = $filter['field'];
+            $reportfilter->base64 = empty($filter['base64']) ? 0 : 1;
+            $DB->insert_record_raw('block_powerbi_reports_filter', $reportfilter);
+        }
+    }
     redirect(new moodle_url('/blocks/powerbi/report.php'), $str);
 }
 if ($id) {
-    $heading = get_string('editingreport', 'block_powerbi');
-    $form->set_data($DB->get_record('block_powerbi_reports', ['id' => $id]));
-} else {
-    $heading = get_string('addingreport', 'block_powerbi');
+    $report = $DB->get_record('block_powerbi_reports', ['id' => $id]);
+    $filters = $DB->get_records('block_powerbi_reports_filter', ['reportid' => $id]);
+    $report->filters = [];
+    foreach ($filters as $f) {
+        $report->filters[] = [
+            'name' => $f->name,
+            'field' => $f->field,
+            'base64' => $f->base64
+        ];
+    }
+    $form->set_data($report);
 }
 
 echo $output->header(),
