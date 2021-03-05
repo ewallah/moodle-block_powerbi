@@ -113,7 +113,7 @@ class embedded_report implements renderable, templatable {
                 $dash = json_decode($result);
 
                 $this->name = $dash->name;
-                $this->embedurl = $dash->embedUrl;
+                $this->embedurl = $dash->embedUrl . '?filter=' . urlencode($filters);
 
                 $this->reportid = $report->report_id;
                 $embeddata = json_encode(
