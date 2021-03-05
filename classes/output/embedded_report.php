@@ -45,6 +45,8 @@ class embedded_report implements renderable, templatable {
     private $reportfound = false;
     private $embedurl = '';
     private $name = '';
+    private $reportid = '';
+    private $accesstoken = '';
 
     /**
      * Constructor.
@@ -82,7 +84,28 @@ class embedded_report implements renderable, templatable {
             $curl->setHeader('Authorization: Bearer '. $decodedresponse->access_token);
             $curl->setHeader('Content-type: application/json');
 
-            $result = $curl->get('https://api.powerbi.com/v1.0/myorg/groups/'.$report->workspace_id.'/reports/'.$report->report_id);
+
+            $reporturl = 'https://api.powerbi.com/v1.0/myorg/groups/'.$report->workspace_id.'/reports/'.$report->report_id;
+            profile_load_data($USER);
+            if (!empty($report->filters)) {
+                $filtersarr = [];
+                foreach ($report->filters as $f) {
+                    if (empty($f->name) || empty($USER->{$f->field})) {
+                        continue;
+                    }
+                    $value = $USER->{$f->field};
+                    if ($f->base64) {
+                        $value = base64_encode($value);
+                    }
+                    $filtersarr[] = "{$f->name} eq '{$value}'";
+                }
+                if (!empty($filtersarr)) {
+                   $filters = implode(' and ', $filtersarr);
+                   $reporturl .= '?filter=' . urlencode($filters);
+                }
+            }
+
+            $result = $curl->get($reporturl);
             if (empty($result)) {
                 $this->reportfound = false;
             } else {
@@ -92,39 +115,21 @@ class embedded_report implements renderable, templatable {
                 $this->name = $dash->name;
                 $this->embedurl = $dash->embedUrl;
 
-                profile_load_data($USER);
-                if (!empty($report->filters)) {
-                    $filtersarr = [];
-                    foreach ($report->filters as $f) {
-                        if (empty($f->name) || empty($USER->{$f->field})) {
-                            continue;
-                        }
-                        $value = $USER->{$f->field};
-                        if ($f->base64) {
-                            $value = base64_encode($value);
-                        }
-                        $filtersarr[] = "{$f->name} eq '{$value}'";
-                    }
-                    if (!empty($filtersarr)) {
-                        $filters = implode(' and ', $filtersarr);
-                        $this->embedurl .= '?filter=' . $filters;
-                    }
-                }
-            }
-            $this->reportid = $report->report_id;
-            $embeddata = json_encode(
-                (object)[
-                  'datasets' => [(object)['id' => $dash->datasetId]],
-                  'reports' => [(object)['id' => $report->report_id]],
-                  'targetWorkspaces' => [(object)['id' => $report->workspace_id]],
-                ]
-            );
-            $url = 'https://api.powerbi.com/v1.0/myorg/GenerateToken';
-            $pbtoken = json_decode($curl->post($url, $embeddata));
-            $this->accesstoken = $pbtoken->token;
+                $this->reportid = $report->report_id;
+                $embeddata = json_encode(
+                    (object)[
+                      'datasets' => [(object)['id' => $dash->datasetId]],
+                      'reports' => [(object)['id' => $report->report_id]],
+                      'targetWorkspaces' => [(object)['id' => $report->workspace_id]],
+                    ]
+                );
+                $url = 'https://api.powerbi.com/v1.0/myorg/GenerateToken';
+                $pbtoken = json_decode($curl->post($url, $embeddata));
+                $this->accesstoken = $pbtoken->token;
 
-            $this->page->requires->jquery();
-            $this->page->requires->js(new moodle_url('/blocks/powerbi/js/embed.js'));
+                $this->page->requires->jquery();
+                $this->page->requires->js(new moodle_url('/blocks/powerbi/js/embed.js'));
+            }
         }
     }
 
