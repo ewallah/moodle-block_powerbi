@@ -75,7 +75,8 @@ class embedded_report implements renderable, templatable {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
 
             if (!$result = curl_exec($ch)) {
-                trigger_error(curl_error($ch));
+                var_dump(curl_error($ch));
+                return;
             }
             curl_close($ch);
 
@@ -84,24 +85,19 @@ class embedded_report implements renderable, templatable {
             $curl->setHeader('Authorization: Bearer '. $decodedresponse->access_token);
             $curl->setHeader('Content-type: application/json');
 
-
             $reporturl = 'https://api.powerbi.com/v1.0/myorg/groups/'.$report->workspace_id.'/reports/'.$report->report_id;
             profile_load_data($USER);
             if (!empty($report->filters)) {
-                $filtersarr = [];
+                $this->filters = [];
                 foreach ($report->filters as $f) {
-                    if (empty($f->name) || empty($USER->{$f->field})) {
+                    if (empty($f->filtertable) || empty($USER->{$f->mdlfield})) {
                         continue;
                     }
-                    $value = $USER->{$f->field};
+                    $value = $USER->{$f->mdlfield};
                     if ($f->base64) {
                         $value = base64_encode($value);
                     }
-                    $filtersarr[] = "{$f->name} eq '{$value}'";
-                }
-                if (!empty($filtersarr)) {
-                   $filters = implode(' and ', $filtersarr);
-                   $reporturl .= '?filter=' . urlencode($filters);
+                    $this->filters[] = ['table' => $f->filtertable, 'field' => $f->filterfield, 'value' => $value];
                 }
             }
 
@@ -113,7 +109,7 @@ class embedded_report implements renderable, templatable {
                 $dash = json_decode($result);
 
                 $this->name = $dash->name;
-                $this->embedurl = $dash->embedUrl . '?filter=' . urlencode($filters);
+                $this->embedurl = $dash->embedUrl;
 
                 $this->reportid = $report->report_id;
                 $embeddata = json_encode(
@@ -140,6 +136,7 @@ class embedded_report implements renderable, templatable {
             'name' => $this->name,
             'reportid' => $this->reportid,
             'token' => $this->accesstoken,
+            'filters' => $this->filters,
             'managereportsurl' => (new moodle_url('/blocks/powerbi/report.php'))->out(),
         ];
         return $context;

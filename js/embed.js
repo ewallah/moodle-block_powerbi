@@ -1,11 +1,9 @@
 $(function () {
     window.console.log('we have been started');
     var embedinfo = document.querySelector("#embedinfo");
-    console.log(embedinfo);
     var embedurl = embedinfo.dataset.url;
     var reportId = embedinfo.dataset.reportid;
     var token = embedinfo.dataset.token;
-    window.console.log(reportId);
 
     var embedContainer = $("#embedContainer")[0];
 
@@ -13,7 +11,23 @@ $(function () {
 
     var models = window["powerbi-client"].models;
     var permissions = models.Permissions.All;
-
+    var filterselements = $(".filters");
+    var filters = [];
+    if (filterselements != undefined) {
+        l = filterselements.length;
+        for (i = 0; i < l; i++) {
+            filters.push({
+              $schema: "http://powerbi.com/product/schema#basic",
+              target: {
+                table: filterselements[i].dataset.table,
+                column: filterselements[i].dataset.field
+              },
+              operator: "In",
+              values: [filterselements[i].dataset.value],
+              filterType: 1 // pbi.models.FilterType.BasicFilter
+            });
+        }
+    }
     const config = {
         type: "report",
         tokenType: models.TokenType.Embed,
@@ -21,7 +35,9 @@ $(function () {
         embedUrl: embedurl,
         id: reportId,
         permissions: permissions,
+        filters: filters,
         settings: {
+          filterPaneEnabled: false,
           layoutType: models.LayoutType.Custom,
           customLayout: {
             displayOption: models.DisplayOption.FitToWidth,
@@ -39,6 +55,7 @@ $(function () {
     report.on("rendered", function () {
         window.console.log("Report render successful");
     });
+
 
     // Clear any other error handler event
     report.off("error");

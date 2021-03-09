@@ -66,13 +66,18 @@ class report extends moodleform {
         $autocomplete->setSelected($values);
 
         $elements = [
-            $mform->createElement('text', 'name', '', ['size' => 12]),
-            $mform->createElement('select', 'field', '', $this->filter_options()),
+            $mform->createElement('text', 'filtertable', '', ['size' => 12]),
+            $mform->createElement('text', 'filterfield', '', ['size' => 12]),
+            $mform->createElement('select', 'mdlfield', '', $this->filter_options()),
             $mform->createElement('checkbox', 'base64', get_string('applybase64', 'block_powerbi')),
         ];
         $filters = $mform->createElement('group', 'filters', get_string('filter', 'block_powerbi'), $elements);
 
-        $this->repeat_elements([$filters], 3, ['filters[name]' => ['type' => PARAM_TEXT]],
+        $rules = [
+            'filters[filtertable]' => ['type' => PARAM_TEXT],
+            'filters[filterfield]' => ['type' => PARAM_TEXT]
+        ];
+        $this->repeat_elements([$filters], 3, $rules,
             'filterscount', 'addfilters', 3, get_string('addfilters', 'block_powerbi'));
 
         $this->add_action_buttons();

@@ -83,8 +83,9 @@ if ($form->is_cancelled()) {
     $reportfilter = (object)['reportid' => $reportid];
     if (isset($data->filters)) {
         foreach ($data->filters as $filter) {
-            $reportfilter->name = $filter['name'];
-            $reportfilter->field = $filter['field'];
+            $reportfilter->filtertable = $filter['filtertable'];
+            $reportfilter->filterfield = $filter['filterfield'];
+            $reportfilter->mdlfield = $filter['mdlfield'];
             $reportfilter->base64 = empty($filter['base64']) ? 0 : 1;
             $DB->insert_record_raw('block_powerbi_reports_filter', $reportfilter);
         }
@@ -97,8 +98,9 @@ if ($id) {
     $report->filters = [];
     foreach ($filters as $f) {
         $report->filters[] = [
-            'name' => $f->name,
-            'field' => $f->field,
+            'filtertable' => $f->filtertable,
+            'filterfield' => $f->filterfield,
+            'mdlfield' => $f->mdlfield,
             'base64' => $f->base64
         ];
     }
