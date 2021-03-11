@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'block_powerbi';
-$plugin->release = '1';
-$plugin->version = 2021022300;
-$plugin->requires = 2020061500;
-$plugin->maturity = MATURITY_ALPHA;
+$plugin->release = '2';
+$plugin->version = 2021031100;
+$plugin->requires = 2019111800; // Moodle 3.8.
+$plugin->maturity = MATURITY_RC;
