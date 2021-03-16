@@ -59,10 +59,11 @@ $cohortssql =
   LEFT JOIN {block_powerbi_reports_cohort} rc
          ON c.id = rc.cohortid AND rc.reportid = ?';
 $cohorts = $DB->get_records_sql($cohortssql, [$id]);
+
 $form = new \block_powerbi\output\form\report($url->out(false), ['cohorts' => $cohorts]);
 
 if ($form->is_cancelled()) {
-    redirect('/blocks/powerbi/report.php');
+    redirect(new moodle_url('/blocks/powerbi/report.php'));
 } else if ($data = $form->get_data()) {
     if (empty($data->id)) {
         $reportid = $DB->insert_record('block_powerbi_reports', $data);
