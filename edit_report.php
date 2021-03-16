@@ -43,6 +43,7 @@ if ($id) {
 $url = new moodle_url('/blocks/powerbi/edit_report.php');
 
 $PAGE->set_context($ctx);
+$PAGE->set_pagelayout('standard');
 $PAGE->set_url($url);
 $PAGE->set_title($title);
 $PAGE->set_heading(new lang_string('pluginname', 'block_powerbi'));

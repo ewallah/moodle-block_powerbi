@@ -33,6 +33,7 @@ $str = new lang_string('pluginname', 'block_powerbi');
 $url = new moodle_url('/blocks/powerbi/report.php'); 
 
 $PAGE->set_context($ctx);
+$PAGE->set_pagelayout('standard');
 $PAGE->set_url($url);
 $PAGE->set_title($str . ' - ' . $SITE->fullname);
 $PAGE->set_heading($str);

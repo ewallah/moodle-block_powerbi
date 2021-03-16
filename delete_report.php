@@ -39,6 +39,7 @@ if (confirm_sesskey()) {
         $report = $DB->get_record('block_powerbi_reports', ['id' => $id]);
         $title = get_string('confirmdeletereport', 'block_powerbi');
         $PAGE->set_context(context_system::instance());
+        $PAGE->set_pagelayout('standard');
         $PAGE->set_url(new moodle_url('/blocks/powerbi/delete_report.php'));
         $PAGE->set_title(new lang_string('confirm'));
         $PAGE->set_heading($report->name);

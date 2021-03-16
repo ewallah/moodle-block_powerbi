@@ -37,6 +37,7 @@ $report->filters = $DB->get_records('block_powerbi_reports_filter', ['reportid' 
 $str = new lang_string('pluginname', 'block_powerbi');
 
 $PAGE->set_context($ctx);
+$PAGE->set_pagelayout('standard');
 $PAGE->set_url('/blocks/powerbi/report.php');
 $PAGE->set_heading($str);
 $PAGE->set_title($str);
