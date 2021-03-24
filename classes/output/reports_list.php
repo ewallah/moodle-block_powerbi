@@ -70,6 +70,7 @@ class reports_list implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
         return (object)[
             'reports' => array_values($this->reports),
+            'hasreports' => !empty($this->reports),
             'viewreporturl' => (new moodle_url('/blocks/powerbi/view.php'))->out(),
         ];
     }

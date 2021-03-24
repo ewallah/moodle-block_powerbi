@@ -63,7 +63,7 @@ class block_powerbi extends block_base {
 
         $ctx = context_system::instance();
 
-        if (has_capability('moodle/site:config', $ctx)) {
+        if (has_capability('block/powerbi:viewreports', $ctx)) {
             $output = $this->page->get_renderer('block_powerbi');
             $list = new \block_powerbi\output\reports_list();
             $this->content->text = $output->render($list);
