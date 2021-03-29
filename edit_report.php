@@ -46,7 +46,7 @@ $PAGE->set_context($ctx);
 $PAGE->set_pagelayout('standard');
 $PAGE->set_url($url);
 $PAGE->set_title($title);
-$PAGE->set_heading(new lang_string('pluginname', 'block_powerbi'));
+$PAGE->set_heading(get_config('block_powerbi', 'title'));
 
 $PAGE->navbar->add(new lang_string('managereports', 'block_powerbi'), new moodle_url('/blocks/powerbi/report.php'));
 $PAGE->navbar->add($title);

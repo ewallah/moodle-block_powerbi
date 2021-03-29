@@ -53,4 +53,6 @@ $string['reportupdated'] = 'Report updated';
 $string['reportworkspaceid'] = 'Workspace ID';
 $string['tenant'] = 'Tenant';
 $string['tenantdesc'] = 'The Tenant of your organization provided by Power BI';
+$string['title'] = 'Title of the block';
+$string['titledesc'] = 'This will be used as the title of the block as page headings';
 $string['viewingembeddedreport'] = 'Viewing embedded report';

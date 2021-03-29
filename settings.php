@@ -44,4 +44,10 @@ if ($ADMIN->fulltree) {
         new lang_string('tenant', 'block_powerbi'),
         new lang_string('tenantdesc', 'block_powerbi'), '', PARAM_TEXT);
     $settings->add($setting);
+
+    // Block name and titles.
+    $setting = new admin_setting_configtext('block_powerbi/title',
+        new lang_string('title', 'block_powerbi'),
+        new lang_string('titledesc', 'block_powerbi'), get_string('pluginname', 'block_powerbi'), PARAM_TEXT);
+    $settings->add($setting);
 }

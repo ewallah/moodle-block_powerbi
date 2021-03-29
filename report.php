@@ -29,7 +29,7 @@ $ctx = context_system::instance();
 require_login();
 require_capability('block/powerbi:managereports', $ctx);
 
-$str = new lang_string('pluginname', 'block_powerbi');
+$str = get_config('block_powerbi', 'title');
 $url = new moodle_url('/blocks/powerbi/report.php'); 
 
 $PAGE->set_context($ctx);

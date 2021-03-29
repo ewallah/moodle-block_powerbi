@@ -35,8 +35,7 @@ class block_powerbi extends block_base {
      * Initializes class member variables.
      */
     public function init() {
-        // Needed by Moodle to differentiate between blocks.
-        $this->title = get_string('pluginname', 'block_powerbi');
+        $this->title = get_config('block_powerbi', 'title');
     }
 
     /**
@@ -56,10 +55,7 @@ class block_powerbi extends block_base {
         }
 
         $this->content = new stdClass();
-        $this->content->items = array();
-        $this->content->icons = array();
         $this->content->text = null;
-        $this->content->footer = '';
 
         $ctx = context_system::instance();
 
@@ -85,13 +81,6 @@ class block_powerbi extends block_base {
      * The function is called immediatly after init().
      */
     public function specialization() {
-
-        // Load user defined title and make sure it's never empty.
-        if (empty($this->config->title)) {
-            $this->title = get_string('pluginname', 'block_powerbi');
-        } else {
-            $this->title = $this->config->title;
-        }
     }
 
     /**

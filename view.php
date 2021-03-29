@@ -34,7 +34,7 @@ require_capability('block/powerbi:viewreports', $ctx);
 $report = $DB->get_record('block_powerbi_reports', ['id' => $id]);
 $report->filters = $DB->get_records('block_powerbi_reports_filter', ['reportid' => $report->id]);
 
-$str = new lang_string('pluginname', 'block_powerbi');
+$str = get_config('block_powerbi', 'title');
 
 $PAGE->set_context($ctx);
 $PAGE->set_pagelayout('standard');
