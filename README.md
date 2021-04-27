@@ -3,8 +3,9 @@
 This plugins integrates PowerBI Embedded dashboards.
 
 You can configure your own reports to be displayed inside Moodle.
+Each report/dashboard is associated to one or more cohorts and only it's members can access the reports.
 
-Remember to include "powerbi.js" in "additionalhtmlfooter".
+After installing the plugin, remember to include "powerbi.js" in "additionalhtmlfooter".
 Add a line like this:
 
 <script src="https://mymoodleurl/blocks/powerbi/js/powerbi.js"></script>
