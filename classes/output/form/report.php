@@ -94,7 +94,6 @@ class report extends moodleform {
             'lastname'    => get_string('lastname'),
             'fullname'    => get_string('fullnameuser'),
             'email'       => get_string('email'),
-            'icq'         => get_string('icqnumber'),
             'phone1'      => get_string('phone1'),
             'phone2'      => get_string('phone2'),
             'institution' => get_string('institution'),
