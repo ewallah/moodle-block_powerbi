@@ -30,7 +30,7 @@ require_login();
 require_capability('block/powerbi:managereports', $ctx);
 
 $str = get_config('block_powerbi', 'title');
-$url = new moodle_url('/blocks/powerbi/report.php'); 
+$url = new moodle_url('/blocks/powerbi/report.php');
 
 $PAGE->set_context($ctx);
 $PAGE->set_pagelayout('standard');

@@ -62,7 +62,13 @@ class report extends moodleform {
             }
         }
 
-        $autocomplete = $mform->addElement('autocomplete', 'cohorts', get_string('cohorts', 'block_powerbi'), $options, ['multiple' => true]);
+        $autocomplete = $mform->addElement(
+            'autocomplete',
+            'cohorts',
+            get_string('cohorts', 'block_powerbi'),
+            $options,
+            ['multiple' => true]
+        );
         $autocomplete->setSelected($values);
 
         $elements = [
@@ -83,7 +89,7 @@ class report extends moodleform {
         $this->add_action_buttons();
     }
 
-    function filter_options() {
+    protected function filter_options() {
         global $DB;
 
         $filters = [

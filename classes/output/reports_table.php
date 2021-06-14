@@ -48,9 +48,14 @@ class reports_table implements renderable, templatable {
         global $DB;
         $this->reports = $DB->get_records('block_powerbi_reports');
         foreach ($this->reports as $key => $r) {
-            $this->reports[$key]->editurl = (new moodle_url('/blocks/powerbi/edit_report.php', ['id' => $r->id]))->out();
-            $this->reports[$key]->viewurl = (new moodle_url('/blocks/powerbi/view.php', ['id' => $r->id]))->out();
-            $this->reports[$key]->deleteurl = (new moodle_url('/blocks/powerbi/delete_report.php', ['id' => $r->id, 'sesskey' => sesskey()]))->out();
+            $url = new moodle_url('/blocks/powerbi/edit_report.php', ['id' => $r->id]);
+            $this->reports[$key]->editurl = $url->out();
+
+            $url = new moodle_url('/blocks/powerbi/view.php', ['id' => $r->id]);
+            $this->reports[$key]->viewurl = $url->out();
+
+            $url = new moodle_url('/blocks/powerbi/delete_report.php', ['id' => $r->id, 'sesskey' => sesskey()]);
+            $this->reports[$key]->deleteurl = $url->out();
         }
     }
 

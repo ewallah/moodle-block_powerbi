@@ -68,10 +68,10 @@ class embedded_report implements renderable, templatable {
                 CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
             ]);
-            $query ='grant_type=client_credentials'.
-                    '&client_secret='.$clientsecret.
-                    '&client_id='.$clientid.
-                    '&scope='.urlencode('https://analysis.windows.net/powerbi/api/.default');
+            $query = 'grant_type=client_credentials'.
+                     '&client_secret='.$clientsecret.
+                     '&client_id='.$clientid.
+                     '&scope='.urlencode('https://analysis.windows.net/powerbi/api/.default');
             curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
 
             if (!$result = curl_exec($ch)) {

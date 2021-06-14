@@ -38,6 +38,7 @@ if (confirm_sesskey()) {
     } else {
         $report = $DB->get_record('block_powerbi_reports', ['id' => $id]);
         $title = get_string('confirmdeletereport', 'block_powerbi');
+
         $PAGE->set_context(context_system::instance());
         $PAGE->set_pagelayout('standard');
         $PAGE->set_url(new moodle_url('/blocks/powerbi/delete_report.php'));
@@ -45,12 +46,20 @@ if (confirm_sesskey()) {
         $PAGE->set_heading($report->name);
         $PAGE->navbar->add(new lang_string('managereports', 'block_powerbi'), new moodle_url('/blocks/powerbi/report.php'));
         $PAGE->navbar->add($report->name);
+
         echo $OUTPUT->header();
+
         $message = get_string('confirmdeletereport', 'block_powerbi');
+
         $optionsyes = ['id' => $id, 'sesskey' => sesskey(), 'confirm' => 1];
         $optionsno = [];
-        $buttoncontinue = new single_button(new moodle_url('/blocks/powerbi/delete_report.php', $optionsyes), get_string('yes'), 'get');
-        $buttoncancel   = new single_button(new moodle_url('/blocks/powerbi/report.php', $optionsno), get_string('no'), 'get');
+
+        $url = new moodle_url('/blocks/powerbi/delete_report.php', $optionsyes);
+        $buttoncontinue = new single_button($url, get_string('yes'), 'get');
+
+        $url = new moodle_url('/blocks/powerbi/report.php', $optionsno);
+        $buttoncancel   = new single_button($url, get_string('no'), 'get');
+
         echo $OUTPUT->confirm($message, $buttoncontinue, $buttoncancel);
         echo $OUTPUT->footer();
     }

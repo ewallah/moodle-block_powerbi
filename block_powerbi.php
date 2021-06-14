@@ -88,7 +88,7 @@ class block_powerbi extends block_base {
      *
      * @return bool True if the global configuration is enabled.
      */
-    function has_config() {
+    public function has_config() {
         return true;
     }
 
