@@ -15,7 +15,7 @@
         <licenseversion></licenseversion>
     </library>
     <library>
-        <location>js/powerbi-min.js</location>
+        <location>js/powerbi.min.js</location>
         <name>powerbi-models</name>
         <version>powerbi-models v1.8.0</version>
         <license>MIT</license>
