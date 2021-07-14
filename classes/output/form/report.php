@@ -46,12 +46,15 @@ class report extends moodleform {
 
         $mform->addElement('text', 'name', get_string('reportname', 'block_powerbi'));
         $mform->setType('name', PARAM_TEXT);
+        $mform->addRule('name', null, 'required', null, 'client');
 
         $mform->addElement('text', 'workspace_id', get_string('reportworkspaceid', 'block_powerbi'));
         $mform->setType('workspace_id', PARAM_TEXT);
+        $mform->addRule('workspace_id', null, 'required', null, 'client');
 
         $mform->addElement('text', 'report_id', get_string('reportreportid', 'block_powerbi'));
         $mform->setType('report_id', PARAM_TEXT);
+        $mform->addRule('report_id', null, 'required', null, 'client');
 
         $options = [];
         $values = [];
