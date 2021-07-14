@@ -22,7 +22,7 @@
         <licenseversion></licenseversion>
     </library>
     <library>
-        <location>js/powerbi-min.js</location>
+        <location>js/powerbi.min.js</location>
         <name>powerbi-router</name>
         <version>powerbi-models v0.1.5</version>
         <license>MIT</license>
