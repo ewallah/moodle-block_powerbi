@@ -24,9 +24,9 @@
 
 require_once('../../config.php');
 
-$ctx = context_system::instance();
-
 require_login();
+
+$ctx = context_system::instance();
 require_capability('block/powerbi:managereports', $ctx);
 
 $str = get_config('block_powerbi', 'title');
@@ -37,6 +37,7 @@ $PAGE->set_pagelayout('standard');
 $PAGE->set_url($url);
 $PAGE->set_title($str . ' - ' . $SITE->fullname);
 $PAGE->set_heading($str);
+
 $PAGE->navbar->add($str, $url);
 
 $output = $PAGE->get_renderer('block_powerbi');

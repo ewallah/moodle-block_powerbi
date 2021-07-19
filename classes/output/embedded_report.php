@@ -43,6 +43,7 @@ use renderer_base;
 class embedded_report implements renderable, templatable {
 
     private $reportfound = false;
+    private $filters = [];
     private $embedurl = '';
     private $name = '';
     private $reportid = '';
@@ -88,7 +89,6 @@ class embedded_report implements renderable, templatable {
             $reporturl = 'https://api.powerbi.com/v1.0/myorg/groups/'.$report->workspace_id.'/reports/'.$report->report_id;
             profile_load_data($USER);
             if (!empty($report->filters)) {
-                $this->filters = [];
                 foreach ($report->filters as $f) {
                     if (empty($f->filtertable) || empty($USER->{$f->mdlfield})) {
                         continue;

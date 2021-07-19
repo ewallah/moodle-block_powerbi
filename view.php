@@ -38,7 +38,7 @@ $str = get_config('block_powerbi', 'title');
 
 $PAGE->set_context($ctx);
 $PAGE->set_pagelayout('standard');
-$PAGE->set_url('/blocks/powerbi/report.php');
+$PAGE->set_url('/blocks/powerbi/view.php');
 $PAGE->set_heading($str);
 $PAGE->set_title($str);
 if (has_capability('block/powerbi:managereports', $ctx)) {
