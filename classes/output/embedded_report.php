@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Embedded report
+ * Embedded report.
  *
  * @package   block_powerbi
  * @copyright 2020 Daniel Neis Araujo <daniel@adapta.online>
@@ -86,7 +86,6 @@ class embedded_report implements renderable, templatable {
             $curl->setHeader('Authorization: Bearer '. $decodedresponse->access_token);
             $curl->setHeader('Content-type: application/json');
 
-            $reporturl = 'https://api.powerbi.com/v1.0/myorg/groups/'.$report->workspace_id.'/reports/'.$report->report_id;
             profile_load_data($USER);
             if (!empty($report->filters)) {
                 foreach ($report->filters as $f) {
@@ -101,6 +100,7 @@ class embedded_report implements renderable, templatable {
                 }
             }
 
+            $reporturl = 'https://api.powerbi.com/v1.0/myorg/groups/'.$report->workspace_id.'/reports/'.$report->report_id;
             $result = $curl->get($reporturl);
             if (empty($result)) {
                 $this->reportfound = false;
@@ -109,7 +109,11 @@ class embedded_report implements renderable, templatable {
                 $dash = json_decode($result);
 
                 $this->name = $dash->name;
-                $this->embedurl = $dash->embedUrl;
+                if (empty($dash->embedUrl)) {
+                    $this->embedurl = 'https://embedded.powerbi.com/appTokenReportEmbed?reportId=' . $report->report_id;
+                } else {
+                    $this->embedurl = $dash->embedUrl;
+                }
 
                 $this->reportid = $report->report_id;
                 $embeddata = json_encode(

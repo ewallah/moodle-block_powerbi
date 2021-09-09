@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * List reports
+ * Block Power BI renderer.
  *
  * @package   block_powerbi
  * @copyright 2020 Daniel Neis Araujo <daniel@adapta.online>
