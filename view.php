@@ -31,7 +31,19 @@ $ctx = context_system::instance();
 require_login();
 require_capability('block/powerbi:viewreports', $ctx);
 
+$canmanage = has_capability('block/powerbi:managereports', $ctx);
 $report = $DB->get_record('block_powerbi_reports', ['id' => $id]);
+if (!$canmanage) {
+    $sql =
+        "SELECT 1
+           FROM {block_powerbi_reports_cohort} rc
+           JOIN {cohort_members} cm
+             ON cm.cohortid = rc.cohortid AND cm.userid = ?";
+    if (!$DB->record_exists_sql($sql, [$USER->id])) {
+        throw new moodle_exception('cannotview', 'block_powerbi');
+    }
+}
+
 $report->filters = $DB->get_records('block_powerbi_reports_filter', ['reportid' => $report->id]);
 
 $str = get_config('block_powerbi', 'title');
@@ -41,7 +53,7 @@ $PAGE->set_pagelayout('standard');
 $PAGE->set_url('/blocks/powerbi/view.php');
 $PAGE->set_heading($str);
 $PAGE->set_title($str);
-if (has_capability('block/powerbi:managereports', $ctx)) {
+if ($canmanage) {
     $PAGE->navbar->add(new lang_string('managereports', 'block_powerbi'), new moodle_url('/blocks/powerbi/report.php'));
 }
 $PAGE->navbar->add($str);
