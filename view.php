@@ -38,8 +38,8 @@ if (!$canmanage) {
         "SELECT 1
            FROM {block_powerbi_reports_cohort} rc
            JOIN {cohort_members} cm
-             ON cm.cohortid = rc.cohortid AND cm.userid = ?";
-    if (!$DB->record_exists_sql($sql, [$USER->id])) {
+             ON cm.cohortid = rc.cohortid AND cm.userid = ? AND rc.reportid = ?";
+    if (!$DB->record_exists_sql($sql, [$USER->id, $id])) {
         throw new moodle_exception('cannotview', 'block_powerbi');
     }
 }
