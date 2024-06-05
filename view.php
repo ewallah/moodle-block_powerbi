@@ -48,15 +48,16 @@ $report->filters = $DB->get_records('block_powerbi_reports_filter', ['reportid' 
 
 $str = get_config('block_powerbi', 'title');
 
+$url = new moodle_url('/blocks/powerbi/view.php');
 $PAGE->set_context($ctx);
 $PAGE->set_pagelayout('standard');
-$PAGE->set_url('/blocks/powerbi/view.php');
-$PAGE->set_heading($str);
+$PAGE->set_url($url);
+$PAGE->set_heading($report->name);
 $PAGE->set_title($str);
 if ($canmanage) {
     $PAGE->navbar->add(new lang_string('managereports', 'block_powerbi'), new moodle_url('/blocks/powerbi/report.php'));
 }
-$PAGE->navbar->add($str);
+$PAGE->navbar->add($report->name, $url);
 
 $output = $PAGE->get_renderer('block_powerbi');
 $report = new \block_powerbi\output\embedded_report($report, $PAGE);
