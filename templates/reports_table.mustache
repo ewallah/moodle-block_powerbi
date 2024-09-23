@@ -21,10 +21,13 @@
 
     Example context (json):
     {
-        "reports": [],
-        "addreporturl": "wwwroot/blocks/powerbi/edit_report.php"
-        "editreporturl": "wwwroot/blocks/powerbi/edit_report.php"
-        "viewreporturl": "wwwroot/blocks/powerbi/view.php?id=X"
+        "hasreports": true,
+        "addreporturl": "/blocks/view.php",
+        "reports": [
+            {"name": "view", "workspace_id": "1", "report_id": "1", "viewurl": "/blocks/powerbi/view.php"},
+            {"name": "edit", "workspace_id": "2", "report_id": "2", "editurl": "/blocks/powerbi/edit.php"},
+            {"name": "delete", "workspace_id": "3",  "report_id": "3", "deleteurl": "/blocks/powerbi/delete.php"}
+        ]
     }
 }}
 {{^hasreports}}

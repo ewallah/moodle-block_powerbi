@@ -15,24 +15,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Block Power BI renderer.
+ * Hook callbacks for block_powerbi
  *
- * @package   block_powerbi
- * @copyright 2020 Daniel Neis Araujo <daniel@adapta.online>
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     block_powerbi
+ * @copyright   2022 Daniel Neis Araujo <danielneis@gmail.com>
+ * @author      Renaat Debleu <info@eWallah.net>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace block_powerbi\output;
+defined('MOODLE_INTERNAL') || die();
 
-use plugin_renderer_base;
-use renderable;
-
-/**
- * Block Power BI renderer class.
- *
- * @package    block_powerbi
- * @copyright  2020 Daniel Neis Araujo <daniel@adapta.online>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-class renderer extends plugin_renderer_base {
-}
+$callbacks = [
+    [
+        'hook' => core\hook\output\before_footer_html_generation::class,
+        'callback' => 'block_powerbi\hook_listener::before_footer_html_generation',
+    ],
+];

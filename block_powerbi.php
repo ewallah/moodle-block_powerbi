@@ -98,8 +98,8 @@ class block_powerbi extends block_base {
      * @return string[] Array of pages and permissions.
      */
     public function applicable_formats() {
-        return array(
+        return [
             'all' => true,
-        );
+        ];
     }
 }

@@ -23,7 +23,6 @@
  */
 
 namespace block_powerbi\output;
-defined('MOODLE_INTERNAL') || die();
 
 use moodle_url;
 use renderable;
@@ -39,6 +38,7 @@ use renderer_base;
  */
 class reports_table implements renderable, templatable {
 
+    /** @var array $reports */
     public $reports = [];
 
     /**
@@ -59,6 +59,12 @@ class reports_table implements renderable, templatable {
         }
     }
 
+    /**
+     * Export this data so it can be used as the context for a mustache template.
+     *
+     * @param \renderer_base $output
+     * @return stdClass
+     */
     public function export_for_template(renderer_base $output) {
         return (object)[
             'hasreports' => !empty($this->reports),

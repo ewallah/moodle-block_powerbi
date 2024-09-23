@@ -30,6 +30,7 @@ require_once($CFG->dirroot . "/lib/filelib.php");
 
 use moodle_url;
 use renderable;
+use stdClass;
 use templatable;
 use renderer_base;
 
@@ -42,18 +43,26 @@ use renderer_base;
  */
 class embedded_report implements renderable, templatable {
 
+    /** @var bool $reportfound */
     private $reportfound = false;
+    /** @var array $filters */
     private $filters = [];
+    /** @var string $embedurl */
     private $embedurl = '';
+    /** @var string $name */
     private $name = '';
+    /** @var string $reportid */
     private $reportid = '';
+    /** @var string $accesstoken */
     private $accesstoken = '';
 
     /**
      * Constructor.
+     * @param stdClass $report
+     * @param stdClass $page
      */
-    public function __construct(\stdClass $report, $page) {
-        global $CFG, $USER;
+    public function __construct(stdClass $report, $page) {
+        global $USER;
 
         $this->page = $page;
 
@@ -133,6 +142,12 @@ class embedded_report implements renderable, templatable {
         }
     }
 
+    /**
+     * Export this data so it can be used as the context for a mustache template.
+     *
+     * @param \renderer_base $output
+     * @return stdClass
+     */
     public function export_for_template(renderer_base $output) {
         $context = (object)[
             'reportfound' => $this->reportfound,

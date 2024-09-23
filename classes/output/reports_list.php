@@ -23,13 +23,13 @@
  */
 
 namespace block_powerbi\output;
-defined('MOODLE_INTERNAL') || die();
 
 use moodle_url;
 use renderable;
 use templatable;
 use renderer_base;
 
+defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot.'/cohort/lib.php');
 
 /**
@@ -41,6 +41,7 @@ require_once($CFG->dirroot.'/cohort/lib.php');
  */
 class reports_list implements renderable, templatable {
 
+    /** @var array $reports */
     public $reports = [];
 
     /**
@@ -73,6 +74,12 @@ class reports_list implements renderable, templatable {
         }
     }
 
+    /**
+     * Export this data so it can be used as the context for a mustache template.
+     *
+     * @param \renderer_base $output
+     * @return stdClass
+     */
     public function export_for_template(renderer_base $output) {
         return (object)[
             'reports' => array_values($this->reports),

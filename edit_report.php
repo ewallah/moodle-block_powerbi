@@ -103,7 +103,7 @@ if ($id) {
             'filtertable' => $f->filtertable,
             'filterfield' => $f->filterfield,
             'mdlfield' => $f->mdlfield,
-            'base64' => $f->base64
+            'base64' => $f->base64,
         ];
     }
     $form->set_data($report);

@@ -23,11 +23,12 @@
  */
 
 namespace block_powerbi\output\form;
-defined('MOODLE_INTERNAL') || die();
-
-require_once($CFG->libdir . '/formslib.php');
 
 use moodleform;
+
+defined('MOODLE_INTERNAL') || die();
+require_once($CFG->libdir . '/formslib.php');
+
 
 /**
  * Reports form class.
@@ -38,6 +39,9 @@ use moodleform;
  */
 class report extends moodleform {
 
+    /**
+     * Definition.
+     */
     public function definition() {
         $mform = $this->_form;
 
@@ -84,7 +88,7 @@ class report extends moodleform {
 
         $rules = [
             'filters[filtertable]' => ['type' => PARAM_TEXT],
-            'filters[filterfield]' => ['type' => PARAM_TEXT]
+            'filters[filterfield]' => ['type' => PARAM_TEXT],
         ];
         $this->repeat_elements([$filters], 3, $rules,
             'filterscount', 'addfilters', 3, get_string('addfilters', 'block_powerbi'));
@@ -92,6 +96,10 @@ class report extends moodleform {
         $this->add_action_buttons();
     }
 
+    /**
+     * Filter options.
+     * @return array
+     */
     protected function filter_options() {
         global $DB;
 

@@ -21,8 +21,11 @@
 
     Example context (json):
     {
-        "reports": [],
-        "viewreporturl": "wwwroot/blocks/powerbi/view.php"
+        "hasreports": true,
+        "reports": [
+            {"name": "first", "viewreporturl": "/blocks/powerbi/view.php"},
+            {"name": "second", "viewreporturl": "/blocks/powerbi/edit.php"}
+        ]
     }
 }}
 {{#hasreports}}
